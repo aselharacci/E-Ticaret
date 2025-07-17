@@ -2,20 +2,23 @@ import { Link } from "react-router-dom";
 
 export default function CalltoAction() {
   return (
-    <div className="relative w-full h-[753px] overflow-hidden">
-      <div className="w-full h-[500px] flex flex-col md:flex-row items-center  p-6 md:p-0">
+    <div className="w-[414px] h-[999px] md:w-[1440px] md:h-[682px] md:flex md:flex-row flex flex-col pt-[120px] md:pt-0">
+
+
+      <div className="flex flex-col w-[414px] h-fit gap-[28.1px] md:flex-row md:w-[1439px] md:h-fit md:gap-[30px]">
 
         {/* Görsel Alanı */}
-          <div className="order-2 md:order-1 w-full md:w-1/2 h-[753px] md:h-[700px]">
+          <div className="w-full h-[407px] flex flex-col md:w-[704px] md:h-[682px] md:flex-none">
           <img
             src="/c2a.png"
             alt="call to action"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-xl"
           />
         </div>
 
         {/* Metin Alanı */}
-        <div className="order-1 md:order-2 w-full md:w-1/2 p-25 flex flex-col text-center md:text-left items-center md:items-start gap-4 md:gap-6 max-w-md md:max-w-none">
+        <div className="flex flex-col w-[414px] h-fit gap-[28.1px] md:flex-row md:w-[1439px] md:h-fit md:gap-[30px]">
+          <div className="w-full h-[207px] flex flex-col m-1 md:m-40 md:w-[704px] md:h-[382px] md:flex-none">
           <h5 className=" font-montserrat font-bold text-base text-[#BDBDBD]">SUMMER 2020</h5>
           <h2 className=" font-montserrat font-bold text-[40px] leading-tight md:text-[40px] md:leading-[70px] text-[#252B42]">
             Part of the Neural Universe
@@ -37,6 +40,7 @@ export default function CalltoAction() {
                 READ MORE
               </button>
             </Link>
+            </div>
           </div>
         </div>
       </div>
