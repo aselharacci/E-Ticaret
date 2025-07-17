@@ -100,4 +100,6 @@ const CategoryPick = () => {
 };
 export default CategoryPick;
 
+/* yorum satırı */
+
 
