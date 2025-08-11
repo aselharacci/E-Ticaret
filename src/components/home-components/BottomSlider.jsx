@@ -31,7 +31,7 @@ export default function BottomSlider() {
                 <br className="hidden md:block" />
                 but things on a small scale.
               </h4>
-              <span className="text-2xl font-bold">$16.48</span>
+            
               <Link to="/maintenance">
                 <button className="h-[50px] w-[180px] bg-[#2DC071] font-bold text-base md:text-xl rounded-md">
                   ADD TO CART

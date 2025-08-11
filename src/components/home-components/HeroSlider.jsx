@@ -18,7 +18,7 @@ export default function HeroSlider() {
         }}
       >
         <SwiperSlide>
-          <div className=" w-full h-full bg-[url(product_slider.jpg)] bg-cover bg-[position:50%_center] text-white font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start">
+          <div className=" w-full h-full bg-[url('/product_slider.jpg')] bg-cover bg-[position:50%_center] text-white font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start">
             <h5 className="font-bold">SUMMER 2025</h5>
             <h2 className="font-bold text-[40px] md:text-[58px]">
               NEW COLLECTION
@@ -29,7 +29,7 @@ export default function HeroSlider() {
             </h4>
             <Link
               to="/maintenance"
-              //to="/shop"
+            //to="/shop"
             >
               <button className="h-[62px] w-[221px] bg-[#2DC071] font-bold text-2xl rounded-md">
                 SHOP NOW
@@ -38,7 +38,7 @@ export default function HeroSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className=" w-full h-full bg-[url(product_slider.jpg)] bg-cover bg-[position:50%_center] text-white font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start">
+          <div className=" w-full h-full bg-[url('/product_slider.jpg')] bg-cover bg-[position:50%_center] text-white font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start">
             <h5 className="font-bold">SUMMER 2025</h5>
             <h2 className="font-bold text-[40px] md:text-[58px]">
               NEW COLLECTION
@@ -49,7 +49,7 @@ export default function HeroSlider() {
             </h4>
             <Link
               to="/maintenance"
-              //to="/shop"
+            //to="/shop"
             >
               <button className="h-[62px] w-[221px] bg-[#2DC071] font-bold text-2xl rounded-md">
                 SHOP NOW
