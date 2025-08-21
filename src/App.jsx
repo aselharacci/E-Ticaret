@@ -1,31 +1,40 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Header from "./layout/Header"; // Header bileşenini buradan import ettik
-import Slider from "./components/home-components/HeroSlider";
-import CategoryPick from "./components/home-components/CategoryPick"; 
-import FavProducts from "./components/home-components/FavProducts";
-import BottomSlider from "./components/home-components/BottomSlider"; // BottomSlider bileşenini import ettik
-import CalltoAction from "./components/home-components/CalltoAction";
+// App.jsx
+import { BrowserRouter as Router } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
+
 import Footer from "./layout/Footer";
-import FeaturedPosts from "./components/home-components/FeaturedPosts";
+import Header from "./layout/Header";
+import PageContent from "./layout/PageContent";
+import ScrollToTop from "./components/ScrollToTop";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { initAuth } from "./store/actions/userActions";
+import { fetchCategoriesIfNeeded } from "./store/thunks/categoryThunks";
 
 function App() {
-  return (
-    <Router>
-      {/* Header her sayfada sabit görünecek */}
-      <Header />
-      <Slider />
-      <CategoryPick />
-      <FavProducts />
-      <BottomSlider />
-      <CalltoAction />
-      <FeaturedPosts/>
-      <Footer />
+  const dispatch = useDispatch();
 
-      <Switch>
-        {/* Buraya ileride farklı sayfalarınız için rotalar ekleyebilirsiniz. */}
-      </Switch>
-    </Router>
+  useEffect(() => {
+    dispatch(initAuth());
+    dispatch(fetchCategoriesIfNeeded());
+  }, [dispatch]);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <ScrollToTop />
+        <Header />
+        <PageContent />
+        <Footer />
+      </Router>
+      <ToastContainer position="top-center" autoClose={3000} />
+    </QueryClientProvider>
   );
 }
+
 export default App;
