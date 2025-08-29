@@ -40,7 +40,7 @@ export default function Stats() {
 					playsInline
 					className="w-full h-full object-cover"
 				>
-					<source src="/videos/digital-marketing.mp4" type="video/mp4" />
+					<source src="/public/stats_video.mp4" type="video/mp4" />
 					Your browser does not support the video tag.
 				</video>
 			</div>
