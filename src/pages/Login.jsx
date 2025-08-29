@@ -44,77 +44,93 @@ export default function Login() {
 
 
 	return (
-		<main className="w-[90vw] md:w-[50vw] mx-auto my-20 flex flex-col gap-5 font-[Montserrat] text-[#252B42]">
-			<div>
-				<h1 className="text-center text-4xl font-bold">Login</h1>
-				<p className="text-center">
-					Don&apos;t have an account?{" "}
-					<Link to="/register" className="text-[#23A6F0]">
-						Register
-					</Link>
-				</p>
-			</div>
-
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className="flex flex-col gap-5 text-lg w-[90vw] md:w-[45vw] mx-auto"
-			>
-				{/* Email */}
-				<div className="flex flex-col gap-2">
-					<label htmlFor="email">Email*</label>
-					<input
-						id="email"
-						type="email"
-						placeholder="Enter a valid email"
-						{...register("email", {
-							required: "Email is required",
-							pattern: {
-								value: /^\S+@\S+$/i,
-								message: "Invalid email address",
-							},
-						})}
-						className="border border-[#E6E6E6] p-1 rounded text-base"
-					/>
-					{errors.email && (
-						<p className="text-red-500">{errors.email.message}</p>
-					)}
+		<div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 via-blue-500 to-green-600 px-4">
+			<main className="w-[95vw] md:w-[40vw] flex flex-col gap-6 font-[Montserrat] text-[#1e293b]">
+				{/* Header */}
+				<div className="bg-green-600 text-white py-10 rounded-2xl shadow-lg">
+					<h1 className="text-center text-4xl font-extrabold drop-shadow-md">
+						Welcome Back
+					</h1>
+					<p className="text-center mt-2">
+						Don&apos;t have an account?{" "}
+						<Link
+							to="/register"
+							className="underline font-semibold hover:text-green-200"
+						>
+							Register
+						</Link>
+					</p>
 				</div>
 
-				{/* Password */}
-				<div className="flex flex-col gap-2">
-					<label htmlFor="password">Password*</label>
-					<input
-						id="password"
-						type="password"
-						placeholder="Enter your password"
-						{...register("password", {
-							required: "Password is required",
-						})}
-						className="border border-[#E6E6E6] p-1 rounded text-base"
-					/>
-					{errors.password && (
-						<p className="text-red-500">{errors.password.message}</p>
-					)}
-				</div>
-
-				{/* Remember me */}
-				<label className="flex items-center gap-2 text-base">
-					<input type="checkbox" {...register("remember")} />
-					<span>Remember me</span>
-				</label>
-
-				<button
-					type="submit"
-					disabled={isSubmitting || status === "loading"}
-					className="bg-[#23A6F0] text-white font-bold py-2 rounded flex justify-center items-center w-full md:w-[15vw] mx-auto cursor-pointer hover:bg-[#2497da]"
+				{/* Form */}
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className="flex flex-col gap-5 bg-white p-8 rounded-2xl shadow-xl border border-gray-100 text-base"
 				>
-					{isSubmitting || status === "loading" ? (
-						<CircularProgress size={20} />
-					) : (
-						"Login"
-					)}
-				</button>
-			</form>
-		</main>
+					{/* Email */}
+					<div className="flex flex-col gap-2">
+						<label htmlFor="email" className="font-semibold text-gray-700">
+							Email*
+						</label>
+						<input
+							id="email"
+							type="email"
+							placeholder="Enter a valid email"
+							{...register("email", {
+								required: "Email is required",
+								pattern: {
+									value: /^\S+@\S+$/i,
+									message: "Invalid email address",
+								},
+							})}
+							className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+						/>
+						{errors.email && (
+							<p className="text-red-500 text-sm">{errors.email.message}</p>
+						)}
+					</div>
+
+					{/* Password */}
+					<div className="flex flex-col gap-2">
+						<label htmlFor="password" className="font-semibold text-gray-700">
+							Password*
+						</label>
+						<input
+							id="password"
+							type="password"
+							placeholder="Enter your password"
+							{...register("password", { required: "Password is required" })}
+							className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+						/>
+						{errors.password && (
+							<p className="text-red-500 text-sm">{errors.password.message}</p>
+						)}
+					</div>
+
+					{/* Remember me */}
+					<label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer select-none">
+						<input
+							type="checkbox"
+							{...register("remember")}
+							className="w-4 h-4 text-green-600 rounded focus:ring-green-400 border-gray-300"
+						/>
+						<span>Remember me</span>
+					</label>
+
+					{/* Submit */}
+					<button
+						type="submit"
+						disabled={isSubmitting || status === "loading"}
+						className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition w-full flex justify-center items-center"
+					>
+						{isSubmitting || status === "loading" ? (
+							<CircularProgress size={22} color="inherit" />
+						) : (
+							"Login"
+						)}
+					</button>
+				</form>
+			</main>
+		</div>
 	);
 }

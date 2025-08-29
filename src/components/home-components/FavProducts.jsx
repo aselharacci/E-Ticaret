@@ -1,5 +1,6 @@
-import React from "react";
-import productFavList from "../../data/PruductFavList";
+import { Link } from "react-router-dom";
+import productFavList from "../../data/ProductFavList";
+
 const FavProducts = () => {
   return (
     <section className="w-full bg-white flex flex-col items-center py-20 gap-12 md:gap-20">
@@ -16,12 +17,11 @@ const FavProducts = () => {
         </p>
       </div>
       {/* Ürün Kartları */}
-      <div
-        className="flex flex-col items-center gap-8 md:gap-[30px] w-full md:grid md:grid-cols-4 md:justify-center md:max-w-[1124px]"
-      >
+      <div className="flex flex-col items-center gap-8 md:gap-[30px] w-full md:grid md:grid-cols-4 md:justify-center md:max-w-[1124px]">
         {productFavList.map((product) => (
-          <div
+          <Link
             key={product.id}
+            to={`/product/${product.id}`} // <--- Burada productId geçiyoruz
             className="flex flex-col items-center bg-white rounded-lg shadow-sm w-[328px] md:w-[239px] h-[615px] overflow-hidden"
           >
             {/* Ürün görseli */}
@@ -61,31 +61,11 @@ const FavProducts = () => {
                 ))}
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
   );
 };
+
 export default FavProducts;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

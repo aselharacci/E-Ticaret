@@ -1,15 +1,14 @@
 import { Switch, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
-import Maintenance from "../pages/Maintenance";
 import ShopPage from "../pages/ShopPage";
 import ProductDetail from "../pages/ProductDetail";
 import ContactPage from "../pages/ContactPage";
 import AboutPage from "../pages/AboutPage";
+import Register from "../pages/Register";
+import Login from "../pages/Login";
 import CartPage from "../pages/CartPage";
 import CheckoutAddressPage from "../pages/CheckoutAddressPage";
 import ProtectedRoute from "./ProtectedRoute";
-import AddAddressPage from "../pages/AddAddressPage";
-
 
 export default function PageContent() {
 	return (
@@ -17,8 +16,12 @@ export default function PageContent() {
 			<Route exact path="/">
 				<HomePage />
 			</Route>
-
-
+			<Route path="/register">
+				<Register />
+			</Route>
+			<Route path="/login">
+				<Login />
+			</Route>
 			<Route path="/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
 				<ProductDetail />
 			</Route>
@@ -28,9 +31,6 @@ export default function PageContent() {
 			<Route path="/cart">
 				<CartPage />
 			</Route>
-			<ProtectedRoute path="/checkout/address/new">
-				<AddAddressPage />
-			</ProtectedRoute>
 			<ProtectedRoute path="/checkout">
 				<CheckoutAddressPage />
 			</ProtectedRoute>
@@ -40,7 +40,6 @@ export default function PageContent() {
 			<Route path="/about">
 				<AboutPage />
 			</Route>
-
 
 		</Switch>
 	);

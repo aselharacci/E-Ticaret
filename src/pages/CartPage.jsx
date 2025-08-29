@@ -116,7 +116,7 @@ export default function CartPage() {
 								{/* actions */}
 								<div className="col-span-3 md:col-span-2 text-right">
 									<button
-										className="px-3 py-1 border border-[#E6E6E6] rounded hover:bg-gray-50 cursor-pointer"
+										className="px-3 py-1 border bg-orange-500 text-white rounded hover:bg-gray-50 cursor-pointer"
 										onClick={() => dispatch(removeFromCart(it.product.id))}
 									>
 										Remove

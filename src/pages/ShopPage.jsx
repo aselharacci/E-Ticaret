@@ -8,8 +8,6 @@ import { fetchProducts } from "../store/thunks/productThunks";
 import ProductCard from "../components/shop-page/ProductCard";
 import Pagination from "../components/shop-page/Pagination";
 import Brands from "../components/brands/Brands";
-
-
 export default function ShopPage() {
 	const dispatch = useDispatch();
 	const { categoryId } = useParams();
@@ -40,24 +38,26 @@ export default function ShopPage() {
 		return <p className="text-center mt-10 text-red-500">Try again later.</p>;
 	}
 	return (
-		<main className="w-[90vw] max-w-[1200px] mx-auto py-10">
+		<>
 			<Breadcrumb current="Shop" />
 			<ShopImageGallery />
-			<ProductCard
-				products={productList}
-				selectedCategory={selectedCategory}
-				onCategoryChange={(val) => {
-					setSelectedCategory(val);
-					setPage(1);
-				}}
-			/>
+			<main className="w-[90vw] max-w-[1200px] mx-auto py-10">
+				<ProductCard
+					products={productList}
+					selectedCategory={selectedCategory}
+					onCategoryChange={(val) => {
+						setSelectedCategory(val);
+						setPage(1);
+					}}
+				/>
+				<Pagination
+					currentPage={page}
+					totalPages={totalPages}
+					onPageChange={setPage}
+				/>
 
-			<Pagination
-				currentPage={page}
-				totalPages={totalPages}
-				onPageChange={setPage}
-			/>
+			</main>
 			<Brands />
-		</main>
+		</>
 	);
 }
