@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import CartPage from "../pages/CartPage";
 import CheckoutAddressPage from "../pages/CheckoutAddressPage";
 import ProtectedRoute from "./ProtectedRoute";
+import Pricing from "../pages/Pricing";
 
 export default function PageContent() {
 	return (
@@ -39,6 +40,9 @@ export default function PageContent() {
 			</Route>
 			<Route path="/about">
 				<AboutPage />
+			</Route>
+			<Route path="/pricing">
+				<Pricing />
 			</Route>
 
 		</Switch>

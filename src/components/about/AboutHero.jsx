@@ -27,7 +27,7 @@ export default function AboutHero() {
 				</div>
 
 				<div className="flex justify-center">
-					<img src="public/AboutPage/about-hero.jpeg" alt="Contact" className="w-screen" />
+					<img src="public/AboutPage/about-hero.jpg" alt="Contact" className="w-screen" />
 				</div>
 			</div>
 		</section>
