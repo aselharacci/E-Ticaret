@@ -6,6 +6,7 @@ import Team from "../components/about/Team";
 export default function AboutPage() {
 	return <main>
 		<AboutHero />
+		<div />
 		<Stats />
 		<Team />
 		<Clients />
