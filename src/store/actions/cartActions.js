@@ -21,6 +21,7 @@ export const decreaseFromCart = (productId) => ({
 	payload: productId,
 });
 
+
 export const toggleChecked = (productId) => ({
 	type: CART_TOGGLE_CHECKED,
 	payload: productId,

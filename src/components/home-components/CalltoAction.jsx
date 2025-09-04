@@ -1,5 +1,5 @@
 import React from "react";
-const CalltoAction = () => {
+const CallToAction = () => {
   return (
     <section
       className="w-full bg-white border border-[#fff] rounded-[5px] overflow-hidden relative flex flex-col md:flex-row md:items-center md:justify-end md:h-[682px] md:max-w-[1440px] mx-auto"
@@ -48,4 +48,4 @@ const CalltoAction = () => {
     </section>
   );
 };
-export default CalltoAction;
+export default CallToAction;

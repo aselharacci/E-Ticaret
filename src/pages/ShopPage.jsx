@@ -8,6 +8,7 @@ import { fetchProducts } from "../store/thunks/productThunks";
 import ProductCard from "../components/shop-page/ProductCard";
 import Pagination from "../components/shop-page/Pagination";
 import Brands from "../components/brands/Brands";
+
 export default function ShopPage() {
 	const dispatch = useDispatch();
 	const { categoryId } = useParams();
@@ -16,17 +17,23 @@ export default function ShopPage() {
 	const offset = (page - 1) * limit;
 	const [selectedCategory, setSelectedCategory] = useState(categoryId || "");
 	const { productList, total, fetchState } = useSelector((s) => s.product);
+
+	// URL'den categoryId geldiğinde state güncelle
 	useEffect(() => {
 		if (categoryId) setSelectedCategory(String(categoryId));
 	}, [categoryId]);
+
+	// Backend'e fetchProducts isteği
 	useEffect(() => {
 		const opts = { limit, offset };
-		if (selectedCategory) opts.category_id = selectedCategory;
+		if (selectedCategory) opts.category = selectedCategory; // backend parametresi category olmalı
 		dispatch(fetchProducts(opts));
 	}, [dispatch, limit, offset, selectedCategory]);
+
 	const isLoading = fetchState === "FETCHING";
 	const isError = fetchState === "FAILED";
 	const totalPages = Math.ceil((total || 0) / limit);
+
 	if (isLoading) {
 		return (
 			<div className="w-full flex justify-center mt-10">
@@ -34,9 +41,11 @@ export default function ShopPage() {
 			</div>
 		);
 	}
+
 	if (isError) {
 		return <p className="text-center mt-10 text-red-500">Try again later.</p>;
 	}
+
 	return (
 		<>
 			<Breadcrumb current="Shop" />
@@ -55,7 +64,6 @@ export default function ShopPage() {
 					totalPages={totalPages}
 					onPageChange={setPage}
 				/>
-
 			</main>
 			<Brands />
 		</>
