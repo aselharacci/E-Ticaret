@@ -34,7 +34,7 @@ export default function Clients() {
 					</div>
 				</div>
 				<div className="hidden md:flex h-[640px] w-[60vw] ">
-					<img src="/public/AboutPage/client-hero.jpg" className="w-full h-full object-cover" />
+					<img src="/AboutPage/client-hero.jpg" className="w-full h-full object-cover" />
 				</div>
 			</div>
 		</section>
