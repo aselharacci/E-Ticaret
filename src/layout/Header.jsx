@@ -267,7 +267,7 @@ export default function Header() {
               <>
                 <Link
                   //to="/profile"
-                  to="/maintenance"
+                  to="/profile"
                   className="flex gap-2 content-center items-center "
                   title={emailToShow}
                 >
@@ -294,13 +294,14 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link
-                  //to="/profile"
-                  to="/maintenance"
-                  className="flex gap-1 content-center items-center "
-                >
-                  <CircleUserRound />
-                </Link>
+                {user && (
+                  <Link
+                    to={user.role === "admin" ? "/admin" : "/profile"}
+                    className="flex items-center gap-2 text-blue-600 font-medium"
+                  >
+                    {user.email}
+                  </Link>
+                )}
 
                 <Link
                   to="/login"

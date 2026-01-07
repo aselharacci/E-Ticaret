@@ -13,14 +13,12 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { initAuth } from "./store/actions/userActions";
 import { fetchCategoriesIfNeeded } from "./store/thunks/categoryThunks";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(initAuth());
     dispatch(fetchCategoriesIfNeeded());
   }, [dispatch]);
 

@@ -12,23 +12,26 @@ import Brands from "../components/brands/Brands";
 export default function ShopPage() {
 	const dispatch = useDispatch();
 	const { categoryId } = useParams();
+
 	const [page, setPage] = useState(1);
 	const limit = 12;
 	const offset = (page - 1) * limit;
-	const [selectedCategory, setSelectedCategory] = useState(categoryId || "");
-	const { productList, total, fetchState } = useSelector((s) => s.product);
 
-	// URL'den categoryId geldiğinde state güncelle
+	// UI için kategori state'i kalsın (ileride backend filter ekleyince kullanırız)
+	const [selectedCategory, setSelectedCategory] = useState(categoryId || "");
+
+	const { productList = [], total = 0, fetchState } = useSelector((s) => s.product);
+
+	// URL'den categoryId geldiğinde state güncelle + sayfayı 1'e çek
 	useEffect(() => {
-		if (categoryId) setSelectedCategory(String(categoryId));
+		setSelectedCategory(categoryId ? String(categoryId) : "");
+		setPage(1);
 	}, [categoryId]);
 
-	// Backend'e fetchProducts isteği
+	// ✅ Backend'e fetchProducts isteği (şu an backend sadece limit/offset destekliyor)
 	useEffect(() => {
-		const opts = { limit, offset };
-		if (selectedCategory) opts.category = selectedCategory; // backend parametresi category olmalı
-		dispatch(fetchProducts(opts));
-	}, [dispatch, limit, offset, selectedCategory]);
+		dispatch(fetchProducts({ limit, offset }));
+	}, [dispatch, limit, offset]);
 
 	const isLoading = fetchState === "FETCHING";
 	const isError = fetchState === "FAILED";
@@ -52,13 +55,16 @@ export default function ShopPage() {
 			<ShopImageGallery />
 			<main className="w-[90vw] max-w-[1200px] mx-auto py-10">
 				<ProductCard
-					products={productList}
+					products={Array.isArray(productList) ? productList : []}
 					selectedCategory={selectedCategory}
 					onCategoryChange={(val) => {
 						setSelectedCategory(val);
 						setPage(1);
+						// Şimdilik backend'e filtre göndermiyoruz.
+						// Filtreyi backend'e eklediğimiz gün burada dispatch(fetchProducts({ limit, offset, filter: ... })) yaparız.
 					}}
 				/>
+
 				<Pagination
 					currentPage={page}
 					totalPages={totalPages}

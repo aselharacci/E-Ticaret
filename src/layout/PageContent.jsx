@@ -10,6 +10,11 @@ import CartPage from "../pages/CartPage";
 import CheckoutAddressPage from "../pages/CheckoutAddressPage";
 import ProtectedRoute from "./ProtectedRoute";
 import Pricing from "../pages/Pricing";
+import AdminRoute from "../routes/AdminRoute";
+import AdminProfilePage from "../pages/AdminProfilePage";
+import UserProfilePage from "../pages/UserProfilePage";
+
+
 
 export default function PageContent() {
 	return (
@@ -23,9 +28,8 @@ export default function PageContent() {
 			<Route path="/login">
 				<Login />
 			</Route>
-			<Route path="/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
-				<ProductDetail />
-			</Route>
+			<Route path="/products/:productId" component={ProductDetail} />
+
 			<Route path="/shop">
 				<ShopPage />
 			</Route>
@@ -44,6 +48,11 @@ export default function PageContent() {
 			<Route path="/pricing">
 				<Pricing />
 			</Route>
+			<AdminRoute exact path="/admin" component={AdminProfilePage} />
+
+			<ProtectedRoute exact path="/profile">
+				<UserProfilePage />
+			</ProtectedRoute>
 
 		</Switch>
 	);
