@@ -31,11 +31,12 @@ export default function CartPage() {
 			<h1 className="text-2xl font-bold mb-8">Shopping Cart</h1>
 
 			<div className="flex flex-col gap-6">
-				{items.map((item) => (
+				{items.map((item, index) => (
 					<div
 						key={`${item.id}-${index}`}
 						className="flex flex-col md:flex-row items-center justify-between gap-4 border-b pb-4"
 					>
+
 						{/* product */}
 						<div className="flex items-center gap-4">
 							<img
