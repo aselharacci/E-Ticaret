@@ -1,55 +1,110 @@
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-
-
-const BASE_SHIPPING = 29.99;
-const FREE_SHIPPING_LIMIT = 150;
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 
 export default function CartPage() {
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const history = useHistory();
 
-	const items = useSelector((s) => s.cart?.items || []);
+	const items = useSelector((s) => s.cart.items);
 
-	const totalItems = items.reduce((s, x) => s + x.count, 0);
-	const selected = items.filter((x) => x.checked);
+	const totalPrice = items.reduce(
+		(sum, i) => sum + i.price * i.count,
+		0
+	);
 
-
-
+	if (items.length === 0) {
+		return (
+			<main className="w-[90vw] max-w-[1200px] mx-auto py-20 text-center font-[Montserrat]">
+				<h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
+				<Link
+					to="/shop"
+					className="text-[#23A6F0] font-bold hover:underline"
+				>
+					Go to Shop
+				</Link>
+			</main>
+		);
+	}
 
 	return (
-		<main className="w-[90vw] max-w-[1200px] mx-auto py-10 font-[Montserrat] text-[#252B42]">
-			<h1 className="text-3xl font-bold mb-6">
-				My Cart{" "}
-				<span className="ml-2 text-base font-normal text-[#737373]">
-					({totalItems} {totalItems === 1 ? "item" : "items"})
-				</span>
-			</h1>
+		<main className="w-[90vw] max-w-[1200px] mx-auto py-10 font-[Montserrat]">
+			<h1 className="text-2xl font-bold mb-8">Shopping Cart</h1>
 
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+			<div className="flex flex-col gap-6">
+				{items.map((item) => (
+					<div
+						key={`${item.id}-${index}`}
+						className="flex flex-col md:flex-row items-center justify-between gap-4 border-b pb-4"
+					>
+						{/* product */}
+						<div className="flex items-center gap-4">
+							<img
+								src={item.image}
+								alt={item.name}
+								className="w-24 h-24 object-cover rounded"
+							/>
+							<div>
+								<h3 className="font-bold">{item.name}</h3>
+								<p className="text-sm text-gray-500">
+									${item.price.toFixed(2)}
+								</p>
+							</div>
+						</div>
 
-				{/* sol taraf... */}
+						{/* quantity */}
+						<div className="flex items-center gap-3">
+							<button
+								onClick={() =>
+									dispatch({
+										type: "DECREASE_FROM_CART",
+										payload: item.id,
+									})
+								}
+								className="w-8 h-8 bg-gray-200 rounded font-bold"
+							>
+								−
+							</button>
 
-				{/* sağ taraf */}
-				<aside className="md:col-span-1">
-					<div className="bg-white border border-[#E6E6E6] rounded-xl p-4 shadow-sm md:sticky md:top-24">
-						<h2 className="text-lg font-bold mb-3">Order Summary</h2>
+							<span className="font-bold">{item.count}</span>
 
-						{/* fiyat alanları */}
+							<button
+								onClick={() =>
+									dispatch({
+										type: "ADD_TO_CART",
+										payload: item,
+									})
+								}
+								className="w-8 h-8 bg-[#23A6F0] text-white rounded font-bold"
+							>
+								+
+							</button>
+						</div>
 
-						<button
-							className="mt-4 w-full bg-[#23A6F0] text-white font-bold py-2 rounded hover:bg-[#2497da] disabled:bg-gray-300 cursor-pointer disabled:cursor-not-allowed"
-							disabled={selected.length === 0}
-							onClick={() => history.push("/checkout")} // ⭐ KULLANILIYOR = warning yok
-						>
-							Create Order
-						</button>
-
-						<p className="mt-2 text-xs text-center text-[#737373]">
-							Free shipping for orders over ${FREE_SHIPPING_LIMIT}.
-						</p>
+						{/* subtotal */}
+						<div className="font-bold">
+							${(item.price * item.count).toFixed(2)}
+						</div>
 					</div>
-				</aside>
+				))}
+			</div>
+
+			{/* total */}
+			<div className="flex justify-end mt-10">
+				<div className="text-right">
+					<p className="text-lg">
+						Total:{" "}
+						<span className="font-bold">
+							${totalPrice.toFixed(2)}
+						</span>
+					</p>
+
+					<button
+						onClick={() => history.push("/checkout")}
+						className="mt-4 px-6 py-3 bg-[#23A6F0] text-white font-bold rounded hover:bg-[#1e8ed6]"
+					>
+						Proceed to Checkout
+					</button>
+				</div>
 			</div>
 		</main>
 	);

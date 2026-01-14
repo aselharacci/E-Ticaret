@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import Brands from "../brands/Brands";
+import Brands from "../Brands";
 
 export default function Clients() {
 	const history = useHistory();

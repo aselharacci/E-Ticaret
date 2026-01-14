@@ -1,69 +1,58 @@
-import {
-	CART_ADD_ITEM,
-	CART_REMOVE_ITEM,
-	CART_DECREASE_ITEM,
-	CART_TOGGLE_CHECKED,
-	CART_CLEAR,
-} from "../actionTypes";
-
-
 const initialState = {
 	items: [],
 };
 
-export default function cart(state = initialState, action) {
+const cartReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case CART_ADD_ITEM: {
-			const p = action.payload;
-			const exist = state.items.find((x) => x.product.id === p.id);
-			if (exist) {
+		case "ADD_TO_CART": {
+			const existing = state.items.find(
+				(i) => i.id === action.payload.id
+			);
 
+			if (existing) {
 				return {
 					...state,
-					items: state.items.map((x) =>
-						x.product.id === p.id ? { ...x, count: x.count + 1 } : x
+					items: state.items.map((i) =>
+						i.id === action.payload.id
+							? { ...i, count: i.count + 1 }
+							: i
 					),
 				};
 			}
 
 			return {
 				...state,
-				items: [...state.items, { product: p, count: 1, checked: true }],
+				items: [...state.items, { ...action.payload, count: 1 }],
 			};
 		}
 
-		case CART_DECREASE_ITEM: {
-			const id = action.payload;
-			return {
-				...state,
-				items: state.items
-					.map((x) => (x.product.id === id ? { ...x, count: x.count - 1 } : x))
-					.filter((x) => x.count > 0),
-			};
-		}
+		case "DECREASE_FROM_CART": {
+			const existing = state.items.find(
+				(i) => i.id === action.payload
+			);
 
-		case CART_REMOVE_ITEM: {
-			const id = action.payload;
-			return {
-				...state,
-				items: state.items.filter((x) => x.product.id !== id),
-			};
-		}
+			if (!existing) return state;
 
-		case CART_TOGGLE_CHECKED: {
-			const id = action.payload;
+			if (existing.count === 1) {
+				return {
+					...state,
+					items: state.items.filter((i) => i.id !== action.payload),
+				};
+			}
+
 			return {
 				...state,
-				items: state.items.map((x) =>
-					x.product.id === id ? { ...x, checked: !x.checked } : x
+				items: state.items.map((i) =>
+					i.id === action.payload
+						? { ...i, count: i.count - 1 }
+						: i
 				),
 			};
 		}
 
-		case CART_CLEAR:
-			return initialState;
-
 		default:
 			return state;
 	}
-}
+};
+
+export default cartReducer;

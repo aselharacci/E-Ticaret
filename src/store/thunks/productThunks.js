@@ -7,6 +7,7 @@ import {
 	setProductDetailFetchState,
 } from "../actions/productActions";
 
+
 export const fetchProducts =
 	(options = {}) =>
 		async (dispatch, getState) => {
@@ -21,41 +22,25 @@ export const fetchProducts =
 
 			try {
 				dispatch(setFetchState("FETCHING"));
-
-				// 🔎 Debug log
-				console.log("fetchProducts çağrıldı -> params:", params);
-
 				const res = await axiosInstance.get("/products", { params });
-
-				// 🔎 Debug log
-				console.log("fetchProducts response:", res.data);
-
 				const { total, products } = res.data || {};
 				dispatch(setProductList(Array.isArray(products) ? products : []));
 				dispatch(setTotal(Number(total) || 0));
 				dispatch(setFetchState("FULFILLED"));
 			} catch (err) {
 				dispatch(setFetchState("FAILED"));
-				console.error("fetchProducts error:", err);
+				console.log(err)
 			}
 		};
 
 export const fetchProductById = (productId) => async (dispatch) => {
 	try {
 		dispatch(setProductDetailFetchState("FETCHING"));
-
-		// 🔎 Debug log
-		console.log("fetchProductById çağrıldı -> id:", productId);
-
 		const res = await axiosInstance.get(`/products/${productId}`);
-
-		// 🔎 Debug log
-		console.log("fetchProductById response:", res.data);
-
 		dispatch(setProductDetail(res.data || null));
 		dispatch(setProductDetailFetchState("FULFILLED"));
 	} catch (err) {
-		console.error("fetchProductById error:", err);
+		console.log(err)
 		dispatch(setProductDetail(null));
 		dispatch(setProductDetailFetchState("FAILED"));
 	}

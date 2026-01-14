@@ -1,5 +1,5 @@
 import React from "react";
-import Brands from "../components/brands/Brands"; // kendi proje yoluna göre ayarla
+import Brands from "../components/Brands"; // kendi proje yoluna göre ayarla
 
 export default function Pricing() {
 	return (

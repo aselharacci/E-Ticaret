@@ -1,76 +1,99 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useMemo, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
+
 import Breadcrumb from "../components/shop-page/Breadcrumb";
 import ShopImageGallery from "../components/shop-page/ShopImageGallery";
-import { fetchProducts } from "../store/thunks/productThunks";
 import ProductCard from "../components/shop-page/ProductCard";
 import Pagination from "../components/shop-page/Pagination";
-import Brands from "../components/brands/Brands";
+import Brands from "../components/Brands";
+
+import { getProducts } from "../api/productsApi";
 
 export default function ShopPage() {
-	const dispatch = useDispatch();
 	const { categoryId } = useParams();
 
 	const [page, setPage] = useState(1);
 	const limit = 12;
-	const offset = (page - 1) * limit;
 
-	// UI için kategori state'i kalsın (ileride backend filter ekleyince kullanırız)
 	const [selectedCategory, setSelectedCategory] = useState(categoryId || "");
 
-	const { productList = [], total = 0, fetchState } = useSelector((s) => s.product);
+	const [products, setProducts] = useState([]);
+	const [total, setTotal] = useState(0);
+	const [loading, setLoading] = useState(false);
 
-	// URL'den categoryId geldiğinde state güncelle + sayfayı 1'e çek
 	useEffect(() => {
-		setSelectedCategory(categoryId ? String(categoryId) : "");
-		setPage(1);
+		if (categoryId) {
+			setSelectedCategory(String(categoryId));
+			setPage(1);
+		}
 	}, [categoryId]);
 
-	// ✅ Backend'e fetchProducts isteği (şu an backend sadece limit/offset destekliyor)
+	/* ----------------------------------
+	   API FETCH (PAGINATION)
+	---------------------------------- */
 	useEffect(() => {
-		dispatch(fetchProducts({ limit, offset }));
-	}, [dispatch, limit, offset]);
+		setLoading(true);
 
-	const isLoading = fetchState === "FETCHING";
-	const isError = fetchState === "FAILED";
-	const totalPages = Math.ceil((total || 0) / limit);
+		getProducts({
+			limit,
+			skip: (page - 1) * limit,
+		})
+			.then((data) => {
+				setProducts(data.products || []);
+				setTotal(data.total || 0);
+			})
+			.finally(() => setLoading(false));
+	}, [page]);
 
-	if (isLoading) {
-		return (
-			<div className="w-full flex justify-center mt-10">
-				<CircularProgress />
-			</div>
-		);
-	}
+	const totalPages = Math.ceil(total / limit);
 
-	if (isError) {
-		return <p className="text-center mt-10 text-red-500">Try again later.</p>;
-	}
+	/* ----------------------------------
+	   ADAPTER
+	   dummyjson → ProductCard uyumu
+	---------------------------------- */
+	const adaptedProducts = useMemo(() => {
+		return products.map((p) => ({
+			id: p.id,
+			name: p.title,
+			description: p.description,
+			imageUrl: p.thumbnail,
+			price: p.price,
+			discountPrice:
+				p.discountPercentage != null
+					? p.price - (p.price * p.discountPercentage) / 100
+					: null,
+			category: p.category,
+		}));
+	}, [products]);
 
 	return (
 		<>
 			<Breadcrumb current="Shop" />
 			<ShopImageGallery />
-			<main className="w-[90vw] max-w-[1200px] mx-auto py-10">
-				<ProductCard
-					products={Array.isArray(productList) ? productList : []}
-					selectedCategory={selectedCategory}
-					onCategoryChange={(val) => {
-						setSelectedCategory(val);
-						setPage(1);
-						// Şimdilik backend'e filtre göndermiyoruz.
-						// Filtreyi backend'e eklediğimiz gün burada dispatch(fetchProducts({ limit, offset, filter: ... })) yaparız.
-					}}
-				/>
 
-				<Pagination
-					currentPage={page}
-					totalPages={totalPages}
-					onPageChange={setPage}
-				/>
+			<main className="w-[90vw] max-w-[1200px] mx-auto py-10">
+				{loading ? (
+					<p className="text-center py-10">Loading products...</p>
+				) : (
+					<>
+						<ProductCard
+							products={adaptedProducts}
+							selectedCategory={selectedCategory}
+							onCategoryChange={(val) => {
+								setSelectedCategory(val);
+								setPage(1);
+							}}
+						/>
+
+						<Pagination
+							currentPage={page}
+							totalPages={totalPages}
+							onPageChange={setPage}
+						/>
+					</>
+				)}
 			</main>
+
 			<Brands />
 		</>
 	);

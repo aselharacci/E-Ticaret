@@ -10,6 +10,7 @@ import ScrollToTop from "./components/ScrollToTop";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { initAuth } from "./store/actions/userActions";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -19,6 +20,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(initAuth());
     dispatch(fetchCategoriesIfNeeded());
   }, [dispatch]);
 

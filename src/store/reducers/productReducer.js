@@ -1,48 +1,52 @@
-import {
-	PRODUCT_SET_CATEGORIES,
-	PRODUCT_SET_LIST,
-	PRODUCT_SET_TOTAL,
-	PRODUCT_SET_FETCH_STATE,
-	PRODUCT_SET_LIMIT,
-	PRODUCT_SET_OFFSET,
-	PRODUCT_SET_FILTER,
-	PRODUCT_SET_DETAIL,
-	PRODUCT_SET_DETAIL_FETCH_STATE,
-} from "../actionTypes";
-
 const initialState = {
-	categories: [],
 	productList: [],
 	total: 0,
-	limit: 25,
-	offset: 0,
-	filter: "",
-	fetchState: "NOT_FETCHED",
+	fetchState: "IDLE",
+
 	productDetail: null,
-	productDetailFetchState: "NOT_FETCHED",
+	productDetailFetchState: "IDLE",
 };
 
-export default function productReducer(state = initialState, action) {
+const productReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case PRODUCT_SET_CATEGORIES:
-			return { ...state, categories: action.payload };
-		case PRODUCT_SET_LIST:
-			return { ...state, productList: action.payload };
-		case PRODUCT_SET_TOTAL:
-			return { ...state, total: action.payload };
-		case PRODUCT_SET_FETCH_STATE:
-			return { ...state, fetchState: action.payload };
-		case PRODUCT_SET_LIMIT:
-			return { ...state, limit: action.payload };
-		case PRODUCT_SET_OFFSET:
-			return { ...state, offset: action.payload };
-		case PRODUCT_SET_FILTER:
-			return { ...state, filter: action.payload };
-		case PRODUCT_SET_DETAIL:
-			return { ...state, productDetail: action.payload };
-		case PRODUCT_SET_DETAIL_FETCH_STATE:
-			return { ...state, productDetailFetchState: action.payload };
+		case "PRODUCTS_FETCHING":
+			return { ...state, fetchState: "FETCHING" };
+
+		case "PRODUCTS_SUCCESS":
+			return {
+				...state,
+				fetchState: "SUCCEEDED",
+				productList: action.payload.products,
+				total: action.payload.total,
+			};
+
+		case "PRODUCTS_FAILED":
+			return { ...state, fetchState: "FAILED" };
+
+		/* DETAIL */
+		case "PRODUCT_DETAIL_FETCHING":
+			return {
+				...state,
+				productDetailFetchState: "FETCHING",
+			};
+
+		case "PRODUCT_DETAIL_SUCCESS":
+			return {
+				...state,
+				productDetailFetchState: "SUCCEEDED",
+				productDetail: action.payload,
+			};
+
+		case "PRODUCT_DETAIL_FAILED":
+			return {
+				...state,
+				productDetailFetchState: "FAILED",
+				productDetail: null,
+			};
+
 		default:
 			return state;
 	}
-}
+};
+
+export default productReducer;

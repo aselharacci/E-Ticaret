@@ -17,7 +17,6 @@ import { Link, useLocation, useHistory } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import Gravatar from "react-gravatar";
-import { logoutUser } from "../store/actions/userActions";
 import CartDropdown from "../components/header/CartDropdown";
 import FavoritesDropdown from "../components/header/FavoritesDropdown";
 
@@ -87,7 +86,13 @@ export default function Header() {
   const emailForAvatar = user?.email || "someone@example.com";
   const emailToShow = user?.email || "";
 
-  const categories = useSelector((s) => s.category?.items || []);
+  const categoriesFromStore = useSelector((s) => s.category?.items);
+
+  const categories = Array.isArray(categoriesFromStore)
+    ? categoriesFromStore
+    : [];
+
+
   const catsWomen = categories.filter((c) => c.gender === "k");
   const catsMen = categories.filter((c) => c.gender === "e");
 

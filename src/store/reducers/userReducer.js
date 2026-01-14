@@ -1,15 +1,11 @@
+const initial = { user: null, token: null, status: "idle", error: null };
 
-
-const initialState = {
-	user: null,
-	isAuthenticated: false,
-};
 const LOGIN_START = "user/LOGIN_START";
 const LOGIN_SUCCESS = "user/LOGIN_SUCCESS";
 const LOGIN_FAIL = "user/LOGIN_FAIL";
 const LOGOUT = "user/LOGOUT";
 
-export default function user(state = initialState, action) {
+export default function user(state = initial, action) {
 	switch (action.type) {
 		case LOGIN_START:
 			return { ...state, status: "loading", error: null };
@@ -28,7 +24,7 @@ export default function user(state = initialState, action) {
 			};
 		case LOGOUT:
 			localStorage.removeItem("token");
-			return { ...initialState };
+			return { ...initial };
 		default:
 			return state;
 	}
