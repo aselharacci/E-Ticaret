@@ -22,12 +22,9 @@ export default function PageContent() {
 			<Route exact path="/">
 				<HomePage />
 			</Route>
-			<Route path="/register">
-				<Register />
-			</Route>
-			<Route path="/login">
-				<Login />
-			</Route>
+			<Route path="/login" component={Login} />
+			<Route path="/register" component={Register} />
+
 			<Route path="/products/:productId" component={ProductDetail} />
 
 			<Route path="/shop">
@@ -50,9 +47,9 @@ export default function PageContent() {
 			</Route>
 
 			<Route path="/profile">
-				<PrivateRoute>
-					<UserProfilePage />
-				</PrivateRoute>
+
+				<UserProfilePage />
+
 			</Route>
 
 

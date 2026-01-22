@@ -20,6 +20,11 @@ import Gravatar from "react-gravatar";
 import CartDropdown from "../components/header/CartDropdown";
 import FavoritesDropdown from "../components/header/FavoritesDropdown";
 
+import { logoutUser } from "../store/actions/userActions";
+
+/*************  ✨ Windsurf Command ⭐  *************/
+/*******  126414b0-21c4-49fd-8c82-00ab58782dba  *******/
+
 const slugify = (s = "") =>
   s
     .toString()
