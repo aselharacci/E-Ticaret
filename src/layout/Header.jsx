@@ -1,7 +1,6 @@
 import {
   ChevronDown,
   ChevronUp,
-  CircleUserRound,
   Heart,
   Mail,
   Menu,
@@ -13,7 +12,7 @@ import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 import { useState } from "react";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import Gravatar from "react-gravatar";
@@ -21,9 +20,6 @@ import CartDropdown from "../components/header/CartDropdown";
 import FavoritesDropdown from "../components/header/FavoritesDropdown";
 
 import { logoutUser } from "../store/actions/userActions";
-
-/*************  ✨ Windsurf Command ⭐  *************/
-/*******  126414b0-21c4-49fd-8c82-00ab58782dba  *******/
 
 const slugify = (s = "") =>
   s
@@ -76,11 +72,9 @@ export default function Header() {
   const [cartOpen, setCartOpen] = useState(false);
   const [favOpen, setFavOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen((p) => !p);
 
-  const location = useLocation();
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -88,15 +82,14 @@ export default function Header() {
   const token =
     useSelector((s) => s.user?.token) || localStorage.getItem("token");
   const isAuthed = Boolean(user || token);
+
   const emailForAvatar = user?.email || "someone@example.com";
   const emailToShow = user?.email || "";
 
   const categoriesFromStore = useSelector((s) => s.category?.items);
-
   const categories = Array.isArray(categoriesFromStore)
     ? categoriesFromStore
     : [];
-
 
   const catsWomen = categories.filter((c) => c.gender === "k");
   const catsMen = categories.filter((c) => c.gender === "e");
@@ -113,7 +106,7 @@ export default function Header() {
     const map = codeMap[key];
     const label = map?.label ?? cat.title;
     const slug = map?.slug ?? slugify(cat.title);
-    const g = genderMap[cat.gender] || { label: "Unisex", path: "unisex" };
+    const g = genderMap[cat.gender] || { path: "unisex" };
     return { label, slug, genderPath: g.path };
   };
 
@@ -129,289 +122,135 @@ export default function Header() {
 
   return (
     <header className="z-50 relative">
-      <div className=" hidden md:flex flex-row flex-wrap gap-10 items-center justify-between md:bg-[#252B42] px-10 py-5 text-white text-sm font-bold font-[Montserrat] ">
-        <div className="flex gap-1 items-center justify-center ">
+      {/* TOP BAR */}
+      <div className="hidden md:flex justify-between px-10 py-5 bg-[#252B42] text-white text-sm font-bold">
+        <div className="flex gap-4 items-center">
           <Phone className="h-4" />
           <span>(225) 555-0118</span>
           <Mail className="h-4 ml-5" />
           <span>michelle.rivera@example.com</span>
         </div>
-        <div>
-          <p>Follow Us and get a chance to win 80% off</p>
-        </div>
-        <div className="flex gap-4 items-center justify-center">
-          <p>Follow Us</p>
-          <p>:</p>
-          <a
-            href="https://www.instagram.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaInstagram className="text-xl" />
-          </a>
-
-          <a
-            href="https://www.youtube.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaYoutube className="text-xl" />
-          </a>
-
-          <a
-            href="https://www.facebook.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaFacebook className="text-xl" />
-          </a>
-
-          <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
-            <FaXTwitter className="text-xl" />
-          </a>
+        <p>Follow Us and get a chance to win 80% off</p>
+        <div className="flex gap-4">
+          <FaInstagram />
+          <FaYoutube />
+          <FaFacebook />
+          <FaXTwitter />
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-between items-center gap-5 px-10 py-5 shadow-md">
-        <Link
-          className="font-[Montserrat] text-2xl font-bold text-[#252B42]"
-          to="/"
-        >
+      {/* MAIN HEADER */}
+      <div className="flex justify-between items-center px-10 py-5 shadow-md">
+        <Link to="/" className="text-2xl font-bold text-[#252B42]">
           Bandage
         </Link>
-        <div className="hidden md:flex  justify-between items-center gap-5  font-[Montserrat] text-xsm text-[#737373] ">
-          <Link
-            to="/"
-            onClick={() => setIsOpen(false)}
-            className={`${location.pathname === "/" ? "font-normal" : "font-bold"
-              } `}
-          >
-            Home
-          </Link>
-          <div className="relative flex">
-            <Link
-              to="/shop"
-              className={`${location.pathname === "/shop" ? "font-normal" : "font-bold"
-                } `}
-            >
-              Shop
-            </Link>
 
+        {/* DESKTOP NAV */}
+        <div className="hidden md:flex gap-5 text-sm font-bold text-[#737373]">
+          <Link to="/">Home</Link>
+          <div className="relative flex gap-1">
+            <Link to="/shop">Shop</Link>
             {isOpen ? (
-              <ChevronUp onClick={toggleMenu} className="cursor-pointer" />
+              <ChevronUp onClick={toggleMenu} />
             ) : (
-              <ChevronDown onClick={toggleMenu} className="cursor-pointer" />
+              <ChevronDown onClick={toggleMenu} />
             )}
             {isOpen && (
-              <div className="absolute flex top-full mt-2 shadow-md gap-12 p-5 font-bold text-sm bg-white min-w-[28rem]">
-                <div className="flex flex-col gap-5 min-w-[10rem]">
-                  <Link className="text-[#252B42]">Women</Link>
-                  <div className="flex flex-col gap-5">
-                    {catsWomen.map((cat) => {
-                      const v = viewOf(cat);
-                      return (
-                        <Link
-                          key={cat.id}
-                          onClick={toggleMenu}
-                          to={`/shop/${v.genderPath}/${v.slug}/${cat.id}`}
-                          className="hover:font-normal"
-                        >
-                          {v.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-5 min-w-[10rem]">
-                  <Link className="text-[#252B42]">Men</Link>
-                  <div className="flex flex-col gap-5">
-                    {catsMen.map((cat) => {
-                      const v = viewOf(cat);
-                      return (
-                        <Link
-                          key={cat.id}
-                          onClick={toggleMenu}
-                          to={`/shop/${v.genderPath}/${v.slug}/${cat.id}`}
-                          className="hover:font-normal"
-                        >
-                          {v.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
+              <div className="absolute top-full mt-2 bg-white shadow-md flex gap-10 p-5">
+                {[["Women", catsWomen], ["Men", catsMen]].map(
+                  ([title, list]) => (
+                    <div key={title} className="flex flex-col gap-3">
+                      <span className="font-bold">{title}</span>
+                      {list.map((cat) => {
+                        const v = viewOf(cat);
+                        return (
+                          <Link
+                            key={cat.id}
+                            to={`/shop/${v.genderPath}/${v.slug}/${cat.id}`}
+                            onClick={() => setIsOpen(false)}
+                          >
+                            {v.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )
+                )}
               </div>
             )}
           </div>
-
-          <Link
-            to="/about"
-            onClick={() => setIsOpen(false)}
-            className={`${location.pathname === "/about" ? "font-normal" : "font-bold"
-              }`}
-          >
-            About
-          </Link>
-
-          <Link
-            to="/contact"
-            onClick={() => setIsOpen(false)}
-            className={`${location.pathname === "/contact" ? "font-normal" : "font-bold"
-              }`}
-          >
-            Contact
-          </Link>
-          <Link
-            to="/pricing"
-            onClick={() => setIsOpen(false)}
-            className={`${location.pathname === "/pricing" ? "font-normal" : "font-bold"
-              }`}
-          >
-            Pricing
-          </Link>
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/pricing">Pricing</Link>
         </div>
-        <div className="flex gap-5 md:gap-7 text-[#252B42] md:text-[#23A6F0]">
-          <div className="flex gap-2 items-center">
-            {isAuthed ? (
-              <>
-                <Link
-                  //to="/profile"
-                  to="/profile"
-                  className="flex gap-2 content-center items-center "
-                  title={emailToShow}
-                >
-                  {/* Gravatar */}
-                  <Gravatar
-                    email={emailForAvatar}
-                    size={28}
-                    default="identicon"
-                    className="rounded-full"
-                  />
 
-                  <span className="hidden md:flex text-[#23A6F0] font-bold">
-                    {emailToShow}
-                  </span>
-                </Link>
+        {/* RIGHT ACTIONS */}
+        <div className="flex gap-5 text-[#23A6F0]">
+          {isAuthed ? (
+            <>
+              <Link to="/profile" className="flex items-center gap-2">
+                <Gravatar
+                  email={emailForAvatar}
+                  size={28}
+                  default="identicon"
+                  className="rounded-full"
+                />
+                <span className="hidden md:block">{emailToShow}</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="hidden md:block font-bold"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="hidden md:block font-bold">
+                Login
+              </Link>
+              <Link to="/register" className="hidden md:block font-bold">
+                Register
+              </Link>
+            </>
+          )}
 
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="hidden md:flex text-[#23A6F0] font-bold hover:underline"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                {user && (
-                  <Link
-                    to={user.role === "admin" ? "/admin" : "/profile"}
-                    className="flex items-center gap-2 text-blue-600 font-medium"
-                  >
-                    {user.email}
-                  </Link>
-                )}
-
-                <Link
-                  to="/login"
-                  className="hidden md:flex text-[#23A6F0] font-bold"
-                >
-                  Login
-                </Link>
-                <span className="hidden md:flex text-[#23A6F0] font-bold">
-                  /
-                </span>
-                <Link
-                  to="/register"
-                  className="hidden md:flex text-[#23A6F0] font-bold"
-                >
-                  Register
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* search */}
           <Search />
-          <div className="relative">
-            <button
-              onClick={() => setCartOpen((p) => !p)}
-              className="flex gap-1 content-center items-center cursor-pointer"
-              aria-label="Open cart"
-              title="Cart"
-            >
-              <ShoppingCart />
+          <button onClick={() => setCartOpen((p) => !p)}>
+            <ShoppingCart />
+            <span className="hidden md:inline">{cartCount}</span>
+          </button>
+          {cartOpen && <CartDropdown onClose={() => setCartOpen(false)} />}
 
-              <span className="hidden md:flex">{cartCount}</span>
-            </button>
-
-            {cartOpen && <CartDropdown onClose={() => setCartOpen(false)} />}
-          </div>
           <Menu onClick={toggleMenu} className="md:hidden" />
-          <div className="relative hidden md:flex gap-1 content-center items-center">
-            <button
-              type="button"
-              onClick={() => setFavOpen((p) => !p)}
-              className="flex items-center gap-1 cursor-pointer "
-              title="Favorites"
-            >
-              <Heart />
-              <span>{favCount}</span>
-            </button>
-            {favOpen && <FavoritesDropdown onClose={() => setFavOpen(false)} />}
-          </div>
+          <button
+            className="hidden md:flex"
+            onClick={() => setFavOpen((p) => !p)}
+          >
+            <Heart /> {favCount}
+          </button>
+          {favOpen && <FavoritesDropdown onClose={() => setFavOpen(false)} />}
         </div>
       </div>
+
+      {/* MOBILE MENU */}
       {isOpen && (
-        <div className="flex flex-col justify-between items-center gap-10 px-10 py-20 font-[Montserrat] text-3xl text-[#737373] md:hidden">
-          <Link
-            to="/"
-            className={`${location.pathname === "/" ? "font-normal" : "font-bold"
-              }`}
-          >
-            Home
-          </Link>
-          <Link
-            to="/shop"
-            className={`${location.pathname === "/shop" ? "font-normal" : "font-bold"
-              }`}
-          >
-            Product
-          </Link>
+        <div className="flex flex-col items-center gap-8 py-20 text-3xl md:hidden">
+          <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
+          <Link to="/shop" onClick={() => setIsOpen(false)}>Product</Link>
+          <Link to="/about" onClick={() => setIsOpen(false)}>About</Link>
+          <Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link>
+          <Link to="/pricing" onClick={() => setIsOpen(false)}>Pricing</Link>
 
-          <Link
-            to="/about"
-            onClick={() => setIsOpen(false)}
-            className={`${location.pathname === "/about" ? "font-normal" : "font-bold"
-              }`}
-          >
-            About
-          </Link>
-
-          <Link
-            to="/contact"
-            onClick={() => setIsOpen(false)}
-            className={`${location.pathname === "/contact" ? "font-normal" : "font-bold"
-              }`}
-          >
-            Contact
-          </Link>
-          <Link
-            to="/pricing"
-            onClick={() => setIsOpen(false)}
-            className={`${location.pathname === "/pricing" ? "font-normal" : "font-bold"
-              }`}
-          >
-            Pricing
-          </Link>
+          {!isAuthed && (
+            <>
+              <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
+              <Link to="/register" onClick={() => setIsOpen(false)}>Register</Link>
+            </>
+          )}
 
           {isAuthed && (
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="text-[#23A6F0] font-bold"
-            >
+            <button onClick={handleLogout} className="font-bold text-[#23A6F0]">
               Logout
             </button>
           )}
